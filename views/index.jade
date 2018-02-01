@@ -1,5 +1,14 @@
 extends layout
 
+block imports
+  script(src="http://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous")
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/forge/0.7.1/forge.all.min.js', type='text/javascript' charset='utf-8')
+   
+block script
+  | var md = forge.md.sha256.create();
+  | md.update('The quick brown fox jumps over the lazy dog');
+  | console.log(md.digest().toHex());
+  
 block content
   h1= title
   p Welcome to #{title}
