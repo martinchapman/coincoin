@@ -5587,6 +5587,7 @@ var createHash = __webpack_require__(22);
 
 function httpRequestAsync(theUrl, callback, type) {
 	var data = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+	var headers = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
 
 
 	var xmlHttp = new XMLHttpRequest();
@@ -5606,12 +5607,26 @@ function httpRequestAsync(theUrl, callback, type) {
 		xmlHttp.setRequestHeader("Content-type", "application/json");
 	}
 
+	var header;
+	for (header in headers) {
+
+		xmlHttp.setRequestHeader(header, headers[header]);
+	}
+
+	console.log("Data: " + data);
+
 	xmlHttp.send(data);
 }
 
 module.exports = {
 
-	mine: function mine() {
+	mine: function mine(rewardAddress, feeAddress) {
+
+		var addresses = {};
+		addresses.rewardAddress = rewardAddress;
+		addresses.feeAddress = feeAddress;
+
+		addresses.rewardAddress;
 
 		httpRequestAsync("http://localhost:3001/miner/block", function (responseA) {
 
@@ -5630,16 +5645,12 @@ module.exports = {
 					var blockDifficulty = parseInt(block.hash.substring(0, 14), 16);
 				} while (blockDifficulty >= JSON.parse(responseB).difficulty);
 
-				console.log("Result of hashing: " + block.index + " " + block.previousHash + " " + block.timestamp + " " + JSON.stringify(block.transactions) + " " + block.nonce + " = " + block.hash);
-
-				console.log("Hash string: " + block.index + block.previousHash + block.timestamp + JSON.stringify(block.transactions) + block.nonce);
-
 				httpRequestAsync("http://localhost:3001/blockchain/blocks/latest", function (responseC) {
 
 					console.log(responseC);
 				}, "PUT", JSON.stringify(block));
 			}, "GET");
-		}, "GET");
+		}, "POST", JSON.stringify(addresses));
 	}
 
 };

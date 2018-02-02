@@ -147,8 +147,12 @@ typings/
 # dotenv environment variables file
 .env
 
+# Lock files
 *.lock
 package-lock.json*
+
+# webpack
+*.js.map
 
 ### Nodeclipse ###
 
