@@ -147,6 +147,9 @@ typings/
 # dotenv environment variables file
 .env
 
+*.lock
+package-lock.json*
+
 ### Nodeclipse ###
 
 .jshintrc
