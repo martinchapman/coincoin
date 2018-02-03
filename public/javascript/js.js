@@ -1,11 +1,64 @@
 $(function(){				
+	
+	$('#login').click(function(e){
+		
+		e.preventDefault();
+		
+		var data = {};
+		data.id = $("#walletID").val();
+		data.password = $("#walletPassword").val();
+		
+		$.ajax({
+			
+			type: 'POST',
+			data: JSON.stringify(data),
+			contentType: 'application/json',
+			url: 'http://localhost:3000/login',
+			
+			success: function() {
+				
+			    
+			
+			}
+		
+		});
+		
+    });
+	
+	$('#new').click(function(e){
+		
+		e.preventDefault();
+		
+		var data = {};
+		var password = Math.random().toString(36).slice(-8);
+		data.password = password;
+		
+		$.ajax({
+			
+			type: 'POST',
+			data: JSON.stringify(data),
+			contentType: 'application/json',
+			url: 'http://localhost:3001/operator/wallets',
+			
+			success: function(data) {
+				
+				$("#walletID").val(data.id);
+				$("#walletPassword").val("Generated password: " + password);
+			    $('#passwordOutput').text(password); 
+			    
+			
+			}
+		
+		});
+		
+    });
 
 	$('#mine').click(function(e){
 		
 		e.preventDefault();
 		console.log('select_link clicked');
 		
-		miner.mine("294182560f3899872f413e01ebca7faa250044db64e63aebe0f997133bc3ecc4", "294182560f3899872f413e01ebca7faa250044db64e63aebe0f997133bc3ecc4");
+		miner.mine();
 		
 		/*var data = {};
 		data.title = "title";

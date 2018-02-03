@@ -1,13 +1,11 @@
 @import url(https://fonts.googleapis.com/css?family=Noto+Serif);
+@import url(https://fonts.googleapis.com/css?family=Press+Start+2P);
 
 body, html {
-	
 	height:100%;
-
 }
 
 body {
-	
 	padding: 50px;
   	font: 30px 'Noto Serif', serif;
   	margin: 0;
@@ -15,11 +13,13 @@ body {
   	color: rgb(235,31,72);
   	letter-spacing:.2px;
   	text-align: center;
+}
 
+h1 {
+	font-family: 'Press Start 2P', cursive;
 }
 
 button {
-  
   display: inline-block;
   -webkit-font-smoothing: antialiased;
   background-color: rgb(235,31,72);
@@ -33,11 +33,49 @@ button {
   padding: 20px 40px;
   text-transform: uppercase;
   border: none;
-  
+  margin: 10px;
+  cursor: pointer;
 }
 
-.button:hover {
-	
-	background-color: #2CD892; /* green */
 
+.button:hover {
+	background-color: #2CD892;
+}
+
+.form-style-8{
+    width: 500px;
+    padding: 30px;
+    margin: 50px auto;
+}
+
+.form-style-8 input[type="text"],
+.form-style-8 input[type="date"],
+.form-style-8 input[type="datetime"],
+.form-style-8 input[type="email"],
+.form-style-8 input[type="number"],
+.form-style-8 input[type="search"],
+.form-style-8 input[type="time"],
+.form-style-8 input[type="url"],
+.form-style-8 input[type="password"],
+.form-style-8 textarea,
+.form-style-8 select
+{
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    outline: none;
+    display: block;
+    width: 100%;
+    padding: 7px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    background: transparent;
+    margin-bottom: 10px;
+    font-size: 16px;
+    height: 45px;
+}
+
+.form-style-8 textarea{
+    resize:none;
+    overflow: hidden;
 }

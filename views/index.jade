@@ -1,10 +1,18 @@
 extends layout
 
 block imports
-	script(src="http://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous")
-	script(src='https://cdnjs.cloudflare.com/ajax/libs/forge/0.7.1/forge.all.min.js', type='text/javascript' charset='utf-8')
+	script(src="https://code.jquery.com/jquery-3.3.1.min.js", integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=", crossorigin="anonymous")
 	script(src='/javascript/miner.bundle.js', type='text/javascript' charset='utf-8')
 	script(src='/javascript/js.js', type='text/javascript' charset='utf-8')
 
 block content
-	button(id="mine") mine
+	h1 CoinCoin
+	<div class="form-style-8">
+	<form>
+	<input type="text" id ="walletID" name="walletID" placeholder="WalletID" />
+	<input type="password" id="walletPassword" name="walletPassword" placeholder="Password" />
+	</form>
+	</div>
+	div(id="passwordOutput")
+	button(id="login") login
+	button(id="new") create new wallet

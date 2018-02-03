@@ -5584,6 +5584,7 @@ module.exports = Sha512;
 
 
 var createHash = __webpack_require__(22);
+var config = __webpack_require__(45);
 
 function httpRequestAsync(theUrl, callback, type) {
 	var data = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
@@ -5618,17 +5619,11 @@ function httpRequestAsync(theUrl, callback, type) {
 
 module.exports = {
 
-	mine: function mine(rewardAddress, feeAddress) {
+	mine: function mine() {
 
-		var addresses = {};
-		addresses.rewardAddress = rewardAddress;
-		addresses.feeAddress = feeAddress;
+		httpRequestAsync(config.NODE_PROXY + "miner/block", function (responseA) {
 
-		addresses.rewardAddress;
-
-		httpRequestAsync("http://localhost:3001/miner/block", function (responseA) {
-
-			httpRequestAsync("http://localhost:3001/blockchain/difficulty", function (responseB) {
+			httpRequestAsync(config.NODE_PROXY + "blockchain/difficulty", function (responseB) {
 
 				var block = JSON.parse(responseA).nextBlock;
 
@@ -5643,12 +5638,12 @@ module.exports = {
 					var blockDifficulty = parseInt(block.hash.substring(0, 14), 16);
 				} while (blockDifficulty >= JSON.parse(responseB).difficulty);
 
-				httpRequestAsync("http://localhost:3001/blockchain/blocks/latest", function (responseC) {
+				httpRequestAsync(config.NODE_PROXY + "blockchain/blocks/latest", function (responseC) {
 
 					console.log(responseC);
 				}, "PUT", JSON.stringify(block));
 			}, "GET");
-		}, "POST", JSON.stringify(addresses));
+		}, "POST");
 	}
 
 };
@@ -7481,6 +7476,19 @@ CipherBase.prototype._toString = function (value, enc, fin) {
 };
 
 module.exports = CipherBase;
+
+/***/ }),
+/* 45 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = {
+   NODE_PROXY: "http://localhost:3000/",
+   NODE_ADDRESS: "localhost",
+   NODE_PORT: "3001"
+};
 
 /***/ })
 /******/ ]);
