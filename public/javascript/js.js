@@ -1,3 +1,40 @@
+function httpRequestAsync(theUrl, callback, type, data=null, headers=null) {
+	
+    var xmlHttp = new XMLHttpRequest();
+    
+    xmlHttp.onreadystatechange = function() { 
+        
+    		if (xmlHttp.readyState == 4 && ( xmlHttp.status == 200 || xmlHttp.status == 201 )) {
+    			
+    			callback(xmlHttp.responseText);
+        	
+        } else if ( xmlHttp.readyState == 4 ) {
+        	
+        		console.log("Error (" + xmlHttp.readyState + "/" + xmlHttp.status + "): " + xmlHttp.responseText);
+        		
+        }
+            
+    }
+    
+    xmlHttp.open(type, theUrl, true);
+    
+    if ( type == "POST" || type == "PUT" ) {
+    	
+    		xmlHttp.setRequestHeader("Content-type", "application/json");
+    
+    }
+  
+    var header;
+    for ( header in headers ) {
+    		
+    		xmlHttp.setRequestHeader(header, headers[header]);
+    	
+    }
+    
+    	xmlHttp.send(data);
+
+}
+
 $(function(){				
 	
 	$('#login').click(function(e){
@@ -8,73 +45,36 @@ $(function(){
 		data.wallet = $("#walletID").val();
 		data.password = $("#walletPassword").val();
 		
-		$.ajax({
+		httpRequestAsync("http://localhost:3000/login", function() {
 			
-			type: 'POST',
-			data: JSON.stringify(data),
-			contentType: 'application/json',
-			url: 'http://localhost:3000/login',
+			console.log("Logged in.")
 			
-			success: function() {
-				
-			    console.log("Logged in.")
-			
-			}
-		
-		});
+		}, "POST", JSON.stringify(data))
 		
     });
 	
 	$('#new').click(function(e){
-		
+
 		e.preventDefault();
 		
 		var passwordContainer = {};
 		var password = Math.random().toString(36).slice(-8);
 		passwordContainer.password = password;
 		
-		$.ajax({
+		httpRequestAsync("http://localhost:3001/operator/wallets", function(createWalletResponse) {
 			
-			type: "POST",
-			data: JSON.stringify(passwordContainer),
-			contentType: "application/json",
-			url: "http://localhost:3001/operator/wallets",
+			createWalletResponse = JSON.parse(createWalletResponse)
 			
-			success: function(createWalletResponse) {
-				
-				$("#walletID").val(createWalletResponse.id);
-				$("#walletPassword").val(password);
-			    $('#passwordOutput').text("Generated password: " + password);
-			    
-			    var walletContainer = {};
-			    walletContainer.walletId = createWalletResponse.id;
-			    
-			    $.ajax({
-					
-					type: "POST",
-					beforeSend: function(xhr) { 
-						xhr.setRequestHeader('password', password);
-					},
-					data: JSON.stringify(walletContainer),
-					contentType: "application/json",
-					url: "http://localhost:3001/operator/wallets/" + createWalletResponse.id + "/addresses",
-					
-					success: function(createAddressResponse) {
-						
-						console.log(JSON.stringify(createAddressResponse));
-					    
-					},
-					error: function(error) {
-						
-						console.log(error);
-						
-					}
-				
-				});
-			    
-			}
-		
-		});
+			$("#walletID").val(createWalletResponse.id);
+			$("#walletPassword").val(password);
+		    $('#passwordOutput').text("Generated password: " + password);
+		    
+		    var walletContainer = {};
+		    walletContainer.walletId = createWalletResponse.id;
+		    
+			httpRequestAsync("http://localhost:3001/operator/wallets/" + createWalletResponse.id + "/addresses", function(createAddressResponse) {}, "POST", JSON.stringify(walletContainer), passwordContainer)
+			
+		}, "POST", JSON.stringify(passwordContainer))
 		
     });
 
