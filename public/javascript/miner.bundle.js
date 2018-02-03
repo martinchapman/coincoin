@@ -5613,8 +5613,6 @@ function httpRequestAsync(theUrl, callback, type) {
 		xmlHttp.setRequestHeader(header, headers[header]);
 	}
 
-	console.log("Data: " + data);
-
 	xmlHttp.send(data);
 }
 
