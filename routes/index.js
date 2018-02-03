@@ -41,9 +41,17 @@ function httpRequest(type, path, callback, data=null) {
 
 exports.nextBlock = function(req, res){
 	
-	httpRequest("POST", "/miner/block", function(response) {
+	httpRequest("GET", "/operator/wallets/" + req.session.wallet + "/addresses", function (response) {
 		
-		res.status(200).send(response);
+		var addresses = {}
+		addresses.rewardAddress = response
+		addresses.feeAddress = response
+		
+		httpRequest("POST", "/miner/block", function(response) {
+			
+			res.status(200).send(response);
+			
+		}, JSON.stringify(addresses));
 		
 	});
 	
