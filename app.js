@@ -46,6 +46,8 @@ app.get('/', routes.index);
 
 app.post('/login', routes.login);
 
+app.post('/logout', routes.logout);
+
 app.post('/miner/block', routes.nextBlock);
 
 app.get('/blockchain/difficulty', routes.difficulty);

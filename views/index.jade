@@ -6,7 +6,7 @@ block imports
 	script(src='https://martinchapman.co.uk/coincoin/javascript/js.js', type='text/javascript' charset='utf-8')
 
 block content
-	| <div class="notice info"><p>Under development. The system may be reset at any time.</p></div>
+	| <div class="notice info"><p>Only illustrative. Content may be deleted at any time.</p></div>
 	a(href="https://github.com/martinchapman/coincoin", style="text-decoration: none;")
 		h1 CoinCoin
 	if balance
@@ -21,20 +21,29 @@ block content
 	if balance
 		button(id="transfer") transfer (balance: #{balance} coincoins)
 		button(id="mine") mine	
+		<div id="loginForm" class="form-style-8" style="display:none">
 	else
 		<div id="loginForm" class="form-style-8">
-		<form>
-		<input type="text" id ="walletID" name="walletID" placeholder="WalletID" />
-		<input type="password" id="walletPassword" name="walletPassword" placeholder="Password" />
-		</form>
-		</div>
-		div(id="passwordOutput")
-		button(id="login") login
-		button(id="transfer", style="display: none;")
-		button(id="mine", style="display: none;") mine
-		button(id="new") create new wallet
+	<form>
+	<input type="text" id ="walletID" name="walletID" placeholder="WalletID" />
+	<input type="password" id="walletPassword" name="walletPassword" placeholder="Password" />
+	</form>
+	</div>
+	div(id="passwordOutput")
+	button(id="login") login
+	button(id="transfer", style="display: none;")
+	button(id="mine", style="display: none;") mine
+	button(id="new") create new wallet
 	a(href="https://martinchapman.co.uk/coincoin/chain")
 		button(id="chain") view chain
 	p
+		if balance
+			span(id="logout")
+				a(href="") Logout
+				|.  
+		else
+			span(id="logout", style="display: none;") 
+				a(href="") Logout
+				|. 
 		| Powered by 
 		a(href="https://github.com/martinchapman/naivecoin") Naivecoin

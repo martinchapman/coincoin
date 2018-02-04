@@ -31,6 +31,7 @@ $(function(){
 				$("#transferForm").css('display', 'block')
 				$("#mine").css('display', 'inline')
 				$("#transfer").css('display', 'inline')
+				$("#logout").css('display', 'inline')
 				refreshBalance();
 				
 			}, "POST", data)
@@ -94,5 +95,24 @@ $(function(){
 		}
 		
     });
+	
+	$('#logout').click(function(e){
+		
+		e.preventDefault();
+		
+		coincoin.httpRequestAsync(NODE_PROXY + "/logout", function() {
+			
+			$('#passwordOutput').text("");
+			$("#login").css('display', 'inline')
+			$("#new").css('display', 'inline')
+			$("#loginForm").css('display', 'block')
+			$("#transferForm").css('display', 'none')
+			$("#mine").css('display', 'none')
+			$("#transfer").css('display', 'none')
+			$("#logout").css('display', 'none')
+			
+		}, "POST");
+		
+	});
 
 });
