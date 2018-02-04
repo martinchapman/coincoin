@@ -51,22 +51,26 @@ $(function(){
 		
 		e.preventDefault();
 		
-		var data = {};
-		data.wallet = $("#walletID").val();
-		data.password = $("#walletPassword").val();
+		if ( $("#walletID").val().length == 64 && $("#walletPassword").val().length > 0 ) {
 		
-		httpRequestAsync("http://localhost:3000/login", function() {
+			var data = {};
+			data.wallet = $("#walletID").val();
+			data.password = $("#walletPassword").val();
 			
-			$('#passwordOutput').text("");
-			$("#login").css('display', 'none')
-			$("#new").css('display', 'none')
-			$("#loginForm").css('display', 'none')
-			$("#transferForm").css('display', 'block')
-			$("#mine").css('display', 'inline')
-			$("#transfer").css('display', 'inline')
-			refreshBalance();
-			
-		}, "POST", data)
+			httpRequestAsync("http://localhost:3000/login", function() {
+				
+				$('#passwordOutput').text("");
+				$("#login").css('display', 'none')
+				$("#new").css('display', 'none')
+				$("#loginForm").css('display', 'none')
+				$("#transferForm").css('display', 'block')
+				$("#mine").css('display', 'inline')
+				$("#transfer").css('display', 'inline')
+				refreshBalance();
+				
+			}, "POST", data)
+		
+		}
 		
     });
 	
@@ -102,7 +106,9 @@ $(function(){
 	$('#mine').click(function(e){
 		
 		e.preventDefault();
+		$("#overlay").css('display', 'inline')
 		miner.mine(function() {
+			$("#overlay").css('display', 'none')
 			refreshBalance();
 		});
 		
@@ -112,15 +118,19 @@ $(function(){
 		
 		e.preventDefault();
 		
-		var transaction = {};
-		transaction.toAddress = $('#targetAddress').val();
-		transaction.amount = $('#amount').val();
+		if ( $("#targetWallet").val().length == 64 && $("#amount").val().length > 0 ) {
+			
+			var transaction = {};
+			transaction.toWallet = $('#targetWallet').val(); 
+			transaction.amount = $('#amount').val();
+			
+			httpRequestAsync("http://localhost:3000/operator/wallets/transactions", function() {
+				
+				refreshBalance();
+				
+			}, "POST", transaction)
 		
-		httpRequestAsync("http://localhost:3000/operator/wallets/transactions", function() {
-			
-			refreshBalance();
-			
-		}, "POST", transaction)
+		}
 		
     });
 

@@ -7,16 +7,21 @@ body, html {
 
 body {
 	padding: 50px;
-  	font: 30px 'Noto Serif', serif;
+  	font: 20px 'Noto Serif', serif;
   	margin: 0;
   	background:rgb(255, 253, 231);
   	color: rgb(235,31,72);
   	letter-spacing:.2px;
   	text-align: center;
+  	
 }
 
 h1 {
-	font-family: 'Press Start 2P', cursive;
+	font: 50px 'Press Start 2P', cursive;
+}
+
+a {
+	color: inherit;
 }
 
 button {
@@ -60,6 +65,7 @@ button {
 .form-style-8 textarea,
 .form-style-8 select
 {
+	font-family: inherit;
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -79,3 +85,14 @@ button {
     resize:none;
     overflow: hidden;
 }
+
+#overlay {
+    background-image: url("https://steemitimages.com/0x0/https://steemitimages.com/DQmUFMnFvDX8jyqrpkvAr9GeyJKNYaLpCrRqrtLUJSdEXaf/video4.gif");
+    z-index: 999;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+}​

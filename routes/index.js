@@ -43,6 +43,17 @@ function getBalance(req, res, callback) {
 	});
 
 }
+
+function walletToAddress(wallet, req, res, callback) {
+	
+	httpRequest("GET", "/operator/wallets/" + wallet + "/addresses", function (address) {
+		
+		callback(address);
+		
+	});
+
+}
+
 exports.index = function(req, res){
 	
 	if ( req.session.wallet && req.session.password ) {
@@ -66,9 +77,9 @@ exports.login = function(req, res){
 	req.session.wallet = req.body.wallet;
 	req.session.password = req.body.password;
 	
-	httpRequest("GET", "/operator/wallets/" + req.session.wallet + "/addresses", function (response) {
+	walletToAddress(req.session.wallet, req, res, function(address) {
 		
-		req.session.address = response
+		req.session.address = address
 		res.sendStatus(200);
 		
 	});
@@ -126,11 +137,15 @@ exports.addTransaction = function(req, res) {
 	
 	var transaction = {}
 	transaction.fromAddress = req.session.address;
-	transaction.toAddress = req.body.toAddress;
-	transaction.amount = req.body.amount;
-	
-	httpRequest("POST", "/operator/wallets/" + req.session.wallet + "/transactions", function (response) {
-		res.sendStatus(200);
-	}, transaction, headers);
-	
+	walletToAddress(req.body.toWallet, req, res, function(address) {
+		transaction.toAddress = address;
+		
+		transaction.amount = req.body.amount;
+		
+		httpRequest("POST", "/operator/wallets/" + req.session.wallet + "/transactions", function (response) {
+			console.log(response);
+			res.sendStatus(200);
+		}, transaction, headers);
+	});
+
 }
