@@ -57,6 +57,7 @@ $(function(){
 		
 		httpRequestAsync("http://localhost:3000/login", function() {
 			
+			$('#passwordOutput').text("");
 			$("#login").css('display', 'none')
 			$("#new").css('display', 'none')
 			$("#loginForm").css('display', 'none')
@@ -88,7 +89,11 @@ $(function(){
 		    var walletContainer = {};
 		    walletContainer.walletId = createWalletResponse.id;
 		    
-			httpRequestAsync("http://localhost:3001/operator/wallets/" + createWalletResponse.id + "/addresses", function(createAddressResponse) {}, "POST", JSON.stringify(walletContainer), passwordContainer)
+			httpRequestAsync("http://localhost:3001/operator/wallets/" + createWalletResponse.id + "/addresses", function(createAddressResponse) {
+				
+				console.log("Address creation: " + createAddressResponse);
+				
+			}, "POST", walletContainer, passwordContainer)
 			
 		}, "POST", passwordContainer)
 		

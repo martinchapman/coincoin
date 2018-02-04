@@ -34,7 +34,11 @@ function getBalance(req, res, callback) {
 	
 	httpRequest("GET", "/operator/" + req.session.address + "/balance", function(balance) {
 		
-		callback(JSON.parse(balance).balance);
+		if (balance[0] == "N") {
+			callback(0);
+		} else {
+			callback(JSON.parse(balance).balance);
+		}
 		
 	});
 
