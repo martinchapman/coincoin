@@ -1,12 +1,12 @@
 extends layout
 
 block imports
-	script(src="http://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous")
-	script(src='/javascript/miner.bundle.js', type='text/javascript' charset='utf-8')
-	script(src='/javascript/config.js', type='text/javascript' charset='utf-8')
-	script(src='/javascript/js.js', type='text/javascript' charset='utf-8')
+	script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous")
+	script(src='https://martinchapman.co.uk/coincoin/javascript/miner.bundle.js', type='text/javascript' charset='utf-8')
+	script(src='https://martinchapman.co.uk/coincoin/javascript/js.js', type='text/javascript' charset='utf-8')
 
 block content
+	| <div class="notice info"><p>Under development. The system may be reset at any time.</p></div>
 	a(href="https://github.com/martinchapman/coincoin", style="text-decoration: none;")
 		h1 CoinCoin
 	if balance
@@ -33,7 +33,8 @@ block content
 		button(id="transfer", style="display: none;")
 		button(id="mine", style="display: none;") mine
 		button(id="new") create new wallet
-	button(id="chain") view chain
+	a(href="https://martinchapman.co.uk/coincoin/chain")
+		button(id="chain") view chain
 	p
 		| Powered by 
-		a(href="https://github.com/martinchapman/naivecoin") Naivecoin.
+		a(href="https://github.com/martinchapman/naivecoin") Naivecoin

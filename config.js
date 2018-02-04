@@ -1,5 +1,5 @@
 module.exports = {
-	NODE_PROXY: "http://localhost:3000/",
+	NODE_PROXY: "https://martinchapman.co.uk/coincoin",
     NODE_ADDRESS: "localhost",
     NODE_PORT: "3001",
 };

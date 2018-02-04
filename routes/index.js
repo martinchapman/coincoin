@@ -72,6 +72,26 @@ exports.index = function(req, res){
 	
 };
 
+exports.newWallet = function(req, res) {
+	
+	httpRequest("POST", "/operator/wallets", function(response) {
+		
+		res.status(200).send(response);
+		
+	}, req.body);
+	
+}
+
+exports.addressForWallet = function(req, res) {
+	
+	httpRequest("POST", "/operator/wallets/" + req.params.walletId + "/addresses", function(response) {
+		
+		res.status(200).send(response);
+		
+	}, req.body, req.headers);
+	
+}
+
 exports.login = function(req, res){
 	
 	req.session.wallet = req.body.wallet;

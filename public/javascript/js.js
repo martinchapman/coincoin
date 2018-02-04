@@ -1,43 +1,8 @@
-function httpRequestAsync(theUrl, callback, type, data=null, headers=null) {
+const NODE_PROXY = "https://martinchapman.co.uk/coincoin"
 	
-    var xmlHttp = new XMLHttpRequest();
-    
-    xmlHttp.onreadystatechange = function() { 
-        
-    		if (xmlHttp.readyState == 4 && ( xmlHttp.status == 200 || xmlHttp.status == 201 )) {
-    			
-    			callback(xmlHttp.responseText);
-        	
-        } else if ( xmlHttp.readyState == 4 ) {
-        	
-        		console.log("Error (" + xmlHttp.readyState + "/" + xmlHttp.status + "): " + xmlHttp.responseText);
-        		
-        }
-            
-    }
-    
-    xmlHttp.open(type, theUrl, true);
-    
-    if ( type == "POST" || type == "PUT" ) {
-    	
-    		xmlHttp.setRequestHeader("Content-type", "application/json");
-    
-    }
-  
-    var header;
-    for ( header in headers ) {
-    		
-    		xmlHttp.setRequestHeader(header, headers[header]);
-    	
-    }
-    
-    	xmlHttp.send(JSON.stringify(data));
-
-}
-
 function refreshBalance() {
 	
-	httpRequestAsync("http://localhost:3000/operator/balance", function(balance) {
+	coincoin.httpRequestAsync(NODE_PROXY + "/operator/balance", function(balance) {
 		
 		$("#transfer").text("Transfer (Balance: " + balance + " coincoins)")
 		
@@ -57,7 +22,7 @@ $(function(){
 			data.wallet = $("#walletID").val();
 			data.password = $("#walletPassword").val();
 			
-			httpRequestAsync("http://localhost:3000/login", function() {
+			coincoin.httpRequestAsync(NODE_PROXY + "/login", function() {
 				
 				$('#passwordOutput').text("");
 				$("#login").css('display', 'none')
@@ -82,7 +47,7 @@ $(function(){
 		var password = Math.random().toString(36).slice(-8);
 		passwordContainer.password = password;
 		
-		httpRequestAsync("http://localhost:3001/operator/wallets", function(createWalletResponse) {
+		coincoin.httpRequestAsync(NODE_PROXY + "/operator/wallets", function(createWalletResponse) {
 			
 			createWalletResponse = JSON.parse(createWalletResponse)
 			
@@ -93,11 +58,7 @@ $(function(){
 		    var walletContainer = {};
 		    walletContainer.walletId = createWalletResponse.id;
 		    
-			httpRequestAsync("http://localhost:3001/operator/wallets/" + createWalletResponse.id + "/addresses", function(createAddressResponse) {
-				
-				console.log("Address creation: " + createAddressResponse);
-				
-			}, "POST", walletContainer, passwordContainer)
+			coincoin.httpRequestAsync(NODE_PROXY + "/operator/wallets/" + createWalletResponse.id + "/addresses", function(createAddressResponse) {}, "POST", walletContainer, passwordContainer)
 			
 		}, "POST", passwordContainer)
 		
@@ -107,7 +68,7 @@ $(function(){
 		
 		e.preventDefault();
 		$("#overlay").css('display', 'inline')
-		miner.mine(function() {
+		coincoin.mine(function() {
 			$("#overlay").css('display', 'none')
 			refreshBalance();
 		});
@@ -124,7 +85,7 @@ $(function(){
 			transaction.toWallet = $('#targetWallet').val(); 
 			transaction.amount = $('#amount').val();
 			
-			httpRequestAsync("http://localhost:3000/operator/wallets/transactions", function() {
+			coincoin.httpRequestAsync(NODE_PROXY + "/operator/wallets/transactions", function() {
 				
 				refreshBalance();
 				

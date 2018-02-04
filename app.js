@@ -23,7 +23,7 @@ app.use(session({
 }));
 
 // all environments
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 5000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 
@@ -55,6 +55,10 @@ app.put('/blockchain/blocks/latest', routes.putBlock);
 app.get('/operator/balance', routes.getBalance);
 
 app.post('/operator/wallets/transactions', routes.addTransaction);
+
+app.post('/operator/wallets', routes.newWallet);
+
+app.post('/operator/wallets/:walletId/addresses', routes.addressForWallet);
 
 http.createServer(app).listen(app.get('port'), function(){
 	

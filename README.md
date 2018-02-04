@@ -4,9 +4,17 @@
 
 [https://martinchapman.co.uk/coincoin](https://martinchapman.co.uk/coincoin)
 
-Illustrative cryptocurrency based on [naivecoin](https://github.com/conradoqg/naivecoin).
+Illustrative cryptocurrency front end and middleware. 
 
-Adds:
+Interacts with a [naivecoin](https://github.com/martinchapman/naivecoin) node.
 
-1. User UI
+Front end:
+
+1. UI
 2. Browser miner.
+
+Middleware:
+
+1. Naivecoin proxy
+  * Adding credentials.
+  * Single address to wallet mapping.

@@ -1,4 +1,4 @@
-var miner =
+var coincoin =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -5586,44 +5586,53 @@ module.exports = Sha512;
 var createHash = __webpack_require__(22);
 var config = __webpack_require__(45);
 
-function httpRequestAsync(theUrl, callback, type) {
-	var data = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-	var headers = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
-
-
-	var xmlHttp = new XMLHttpRequest();
-
-	xmlHttp.onreadystatechange = function () {
-
-		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-
-			callback(xmlHttp.responseText);
-		}
-	};
-
-	xmlHttp.open(type, theUrl, true);
-
-	if (type == "POST" || type == "PUT") {
-
-		xmlHttp.setRequestHeader("Content-type", "application/json");
-	}
-
-	var header;
-	for (header in headers) {
-
-		xmlHttp.setRequestHeader(header, headers[header]);
-	}
-
-	xmlHttp.send(data);
-}
-
 module.exports = {
+
+	httpRequestAsync: function httpRequestAsync(theUrl, callback, type) {
+		var data = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+		var headers = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
+
+
+		var xmlHttp = new XMLHttpRequest();
+
+		xmlHttp.onreadystatechange = function () {
+
+			if (xmlHttp.readyState == 4 && (xmlHttp.status == 200 || xmlHttp.status == 201)) {
+
+				callback(xmlHttp.responseText);
+			} else if (xmlHttp.readyState == 4) {
+
+				console.log("Error (" + xmlHttp.readyState + "/" + xmlHttp.status + "): " + xmlHttp.responseText);
+			}
+		};
+
+		xmlHttp.open(type, theUrl, true);
+
+		if (type == "POST" || type == "PUT") {
+
+			xmlHttp.setRequestHeader("Content-type", "application/json");
+		}
+
+		var header;
+		for (header in headers) {
+
+			xmlHttp.setRequestHeader(header, headers[header]);
+		}
+
+		if (data != null) {
+
+			xmlHttp.send(JSON.stringify(data));
+		} else {
+
+			xmlHttp.send();
+		}
+	},
 
 	mine: function mine(callback) {
 
-		httpRequestAsync(config.NODE_PROXY + "miner/block", function (responseA) {
+		module.exports.httpRequestAsync(config.NODE_PROXY + "/miner/block", function (responseA) {
 
-			httpRequestAsync(config.NODE_PROXY + "blockchain/difficulty", function (responseB) {
+			module.exports.httpRequestAsync(config.NODE_PROXY + "/blockchain/difficulty", function (responseB) {
 
 				var block = JSON.parse(responseA).nextBlock;
 
@@ -5638,10 +5647,10 @@ module.exports = {
 					var blockDifficulty = parseInt(block.hash.substring(0, 14), 16);
 				} while (blockDifficulty >= JSON.parse(responseB).difficulty);
 
-				httpRequestAsync(config.NODE_PROXY + "blockchain/blocks/latest", function (responseC) {
+				module.exports.httpRequestAsync(config.NODE_PROXY + "/blockchain/blocks/latest", function (responseC) {
 
 					callback();
-				}, "PUT", JSON.stringify(block));
+				}, "PUT", block);
 			}, "GET");
 		}, "POST");
 	}
@@ -7485,7 +7494,7 @@ module.exports = CipherBase;
 
 
 module.exports = {
-   NODE_PROXY: "http://localhost:3000/",
+   NODE_PROXY: "https://martinchapman.co.uk/coincoin",
    NODE_ADDRESS: "localhost",
    NODE_PORT: "3001"
 };

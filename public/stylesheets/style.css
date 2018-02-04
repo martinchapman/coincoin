@@ -13,7 +13,6 @@ body {
   	color: rgb(235,31,72);
   	letter-spacing:.2px;
   	text-align: center;
-  	
 }
 
 h1 {
@@ -65,7 +64,7 @@ button {
 .form-style-8 textarea,
 .form-style-8 select
 {
-	font-family: inherit;
+	font: inherit;
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -77,13 +76,48 @@ button {
     border-bottom: 1px solid #ddd;
     background: transparent;
     margin-bottom: 10px;
-    font-size: 16px;
     height: 45px;
 }
 
 .form-style-8 textarea{
     resize:none;
     overflow: hidden;
+}
+
+.notice {
+  position: relative;
+  margin: 1em;
+  background: #F9F9F9;
+  padding: 1em 1em 1em 2em;
+  border-left: 4px solid #DDD;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125);
+  color: #000;
+}
+
+.notice:before {
+  position: absolute;
+  top: 50%;
+  margin-top: -17px;
+  left: -17px;
+  background-color: #DDD;
+  color: #FFF;
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  text-align: center;
+  line-height: 30px;
+  font-weight: bold;
+  font-family: Georgia;
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.info {
+  border-color: #0074D9;
+}
+
+.info:before {
+  content: "i";
+  background-color: #0074D9;
 }
 
 #overlay {

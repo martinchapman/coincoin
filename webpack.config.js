@@ -8,7 +8,7 @@ module.exports = {
          path: path.resolve(__dirname, 'public/javascript'),
          filename: 'miner.bundle.js',
          libraryTarget: 'var',
-         library: 'miner'
+         library: 'coincoin'
      },
      module: {
          loaders: [
