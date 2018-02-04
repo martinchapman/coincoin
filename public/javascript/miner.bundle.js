@@ -5619,7 +5619,7 @@ function httpRequestAsync(theUrl, callback, type) {
 
 module.exports = {
 
-	mine: function mine() {
+	mine: function mine(callback) {
 
 		httpRequestAsync(config.NODE_PROXY + "miner/block", function (responseA) {
 
@@ -5640,7 +5640,7 @@ module.exports = {
 
 				httpRequestAsync(config.NODE_PROXY + "blockchain/blocks/latest", function (responseC) {
 
-					console.log(responseC);
+					callback();
 				}, "PUT", JSON.stringify(block));
 			}, "GET");
 		}, "POST");

@@ -31,8 +31,18 @@ function httpRequestAsync(theUrl, callback, type, data=null, headers=null) {
     	
     }
     
-    	xmlHttp.send(data);
+    	xmlHttp.send(JSON.stringify(data));
 
+}
+
+function refreshBalance() {
+	
+	httpRequestAsync("http://localhost:3000/operator/balance", function(balance) {
+		
+		$("#transfer").text("Transfer (Balance: " + balance + " coincoins)")
+		
+	}, "GET");
+	
 }
 
 $(function(){				
@@ -47,9 +57,15 @@ $(function(){
 		
 		httpRequestAsync("http://localhost:3000/login", function() {
 			
-			console.log("Logged in.")
+			$("#login").css('display', 'none')
+			$("#new").css('display', 'none')
+			$("#loginForm").css('display', 'none')
+			$("#transferForm").css('display', 'block')
+			$("#mine").css('display', 'inline')
+			$("#transfer").css('display', 'inline')
+			refreshBalance();
 			
-		}, "POST", JSON.stringify(data))
+		}, "POST", data)
 		
     });
 	
@@ -74,36 +90,32 @@ $(function(){
 		    
 			httpRequestAsync("http://localhost:3001/operator/wallets/" + createWalletResponse.id + "/addresses", function(createAddressResponse) {}, "POST", JSON.stringify(walletContainer), passwordContainer)
 			
-		}, "POST", JSON.stringify(passwordContainer))
+		}, "POST", passwordContainer)
 		
     });
 
 	$('#mine').click(function(e){
 		
 		e.preventDefault();
-		console.log('select_link clicked');
+		miner.mine(function() {
+			refreshBalance();
+		});
 		
-		miner.mine();
+    });
+	
+	$('#transfer').click(function(e){
 		
-		/*var data = {};
-		data.title = "title";
-		data.message = "message";
+		e.preventDefault();
 		
-		$.ajax({
+		var transaction = {};
+		transaction.toAddress = $('#targetAddress').val();
+		transaction.amount = $('#amount').val();
+		
+		httpRequestAsync("http://localhost:3000/operator/wallets/transactions", function() {
 			
-			type: 'POST',
-			data: JSON.stringify(data),
-			contentType: 'application/json',
-			url: 'http://localhost:3000/endpoint',
+			refreshBalance();
 			
-			success: function(data) {
-				
-			    console.log('success');
-			    console.log(JSON.stringify(data));
-			
-			}
-		
-		});*/
+		}, "POST", transaction)
 		
     });
 

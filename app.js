@@ -52,6 +52,10 @@ app.get('/blockchain/difficulty', routes.difficulty);
 
 app.put('/blockchain/blocks/latest', routes.putBlock);
 
+app.get('/operator/balance', routes.getBalance);
+
+app.post('/operator/wallets/transactions', routes.addTransaction);
+
 http.createServer(app).listen(app.get('port'), function(){
 	
 	console.log('Express server listening on port ' + app.get('port'));
