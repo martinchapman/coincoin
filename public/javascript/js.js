@@ -10,7 +10,19 @@ function refreshBalance() {
 	
 }
 
+if (window.Worker) { 
+	
+	console.log("Supported.")
+	var worker = new Worker('javascript/minerWorker.js');
+	
+} else {
+	
+	console.log("Not Supported.")
+	
+}
+
 $(function(){				
+	
 	
 	$('#login').click(function(e){
 		
@@ -25,12 +37,10 @@ $(function(){
 			coincoin.httpRequestAsync(NODE_PROXY + "/login", function() {
 				
 				$('#passwordOutput').text("");
-				$("#login").css('display', 'none')
-				$("#new").css('display', 'none')
+				$("#loginNew").css('display', 'none')
 				$("#loginForm").css('display', 'none')
 				$("#transferForm").css('display', 'block')
-				$("#mine").css('display', 'inline')
-				$("#transfer").css('display', 'inline')
+				$("#transferMine").css('display', 'inline')
 				$("#logout").css('display', 'inline')
 				refreshBalance();
 				
@@ -69,12 +79,27 @@ $(function(){
 		
 		e.preventDefault();
 		$("#overlay").css('display', 'inline')
-		coincoin.mine(function() {
+		
+		worker.postMessage("CoinCoin Miner | Start.");
+		 
+		worker.onmessage = function(e) {
+			
+			console.log(e.data)
 			$("#overlay").css('display', 'none')
 			refreshBalance();
-		});
-		
+		  
+		}
+	  	
     });
+	
+	$('#cancel').click(function(e){
+		
+		e.preventDefault();
+		worker.terminate();
+		$("#overlay").css('display', 'none')
+		refreshBalance();
+		
+	});
 	
 	$('#transfer').click(function(e){
 		
@@ -103,12 +128,10 @@ $(function(){
 		coincoin.httpRequestAsync(NODE_PROXY + "/logout", function() {
 			
 			$('#passwordOutput').text("");
-			$("#login").css('display', 'inline')
-			$("#new").css('display', 'inline')
+			$("#loginNew").css('display', 'inline')
 			$("#loginForm").css('display', 'block')
 			$("#transferForm").css('display', 'none')
-			$("#mine").css('display', 'none')
-			$("#transfer").css('display', 'none')
+			$("#transferMine").css('display', 'none')
 			$("#logout").css('display', 'none')
 			
 		}, "POST");

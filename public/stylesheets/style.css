@@ -46,7 +46,7 @@ button {
 	background-color: #2CD892;
 }
 
-.form-style-8{
+.form-style-8, .text-box {
     width: 500px;
     padding: 30px;
     margin: 50px auto;
