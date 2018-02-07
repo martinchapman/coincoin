@@ -6,7 +6,7 @@
 
 Illustrative cryptocurrency front end and middleware. 
 
-Interacts with a [naivecoin](https://github.com/martinchapman/naivecoin) node.
+Interacts with a [(notso)naivecoin](https://github.com/martinchapman/notsonaivecoin) node.
 
 Front end:
 
@@ -15,6 +15,6 @@ Front end:
 
 Middleware:
 
-1. Naivecoin proxy
+1. NotSoNaivecoin proxy
   * Adding credentials.
   * Single address to wallet mapping.
