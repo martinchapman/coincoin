@@ -52,6 +52,8 @@ app.post('/miner/block', routes.nextBlock);
 
 app.get('/blockchain/difficulty', routes.difficulty);
 
+app.get('/blockchain/reward', routes.reward);
+
 app.put('/blockchain/blocks/latest', routes.putBlock);
 
 app.get('/operator/balance', routes.getBalance);

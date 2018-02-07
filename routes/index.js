@@ -137,6 +137,16 @@ exports.difficulty = function(req, res){
 
 };
 
+exports.reward = function(req, res){
+	
+	httpRequest("GET", "/blockchain/reward", function(response) {
+		
+		res.status(200).send(response);
+		
+	});
+
+};
+
 exports.putBlock = function(req, res){
 	
 	httpRequest("PUT", "/blockchain/blocks/latest", function(response) {

@@ -10,16 +10,7 @@ function refreshBalance() {
 	
 }
 
-if (window.Worker) { 
-	
-	console.log("Supported.")
-	var worker = new Worker('javascript/minerWorker.js');
-	
-} else {
-	
-	console.log("Not Supported.")
-	
-}
+
 
 $(function(){				
 	
@@ -74,21 +65,34 @@ $(function(){
 		}, "POST", passwordContainer)
 		
     });
+	
+	var worker;
 
 	$('#mine').click(function(e){
 		
 		e.preventDefault();
 		$("#overlay").css('display', 'inline')
 		
-		worker.postMessage("CoinCoin Miner | Start.");
-		 
-		worker.onmessage = function(e) {
+		if (window.Worker) { 
+	
+			console.log("Supported.")
+			worker = new Worker('javascript/minerWorker.js');
+			 
+			worker.onmessage = function(e) {
+				
+				console.log(e.data)
+				$("#overlay").css('display', 'none')
+				refreshBalance();
+			  
+			}
 			
-			console.log(e.data)
-			$("#overlay").css('display', 'none')
-			refreshBalance();
-		  
+		} else {
+			
+			console.log("Not Supported.")
+			
 		}
+		worker.postMessage("CoinCoin Miner | Start.");
+		
 	  	
     });
 	
@@ -111,11 +115,16 @@ $(function(){
 			transaction.toWallet = $('#targetWallet').val(); 
 			transaction.amount = $('#amount').val();
 			
-			coincoin.httpRequestAsync(NODE_PROXY + "/operator/wallets/transactions", function() {
+			if ( transaction.amount > 0 ) {
 				
-				refreshBalance();
-				
-			}, "POST", transaction)
+				coincoin.httpRequestAsync(NODE_PROXY + "/operator/wallets/transactions", function() {
+					
+					$('#amount').val("");
+					refreshBalance();
+					
+				}, "POST", transaction)
+			
+			}
 		
 		}
 		
