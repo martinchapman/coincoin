@@ -115,15 +115,23 @@ exports.logout = function(req, res){
 
 exports.nextBlock = function(req, res){
 	
-	var addresses = {}
-	addresses.rewardAddress = req.session.address
-	addresses.feeAddress = req.session.address
+	if ( typeof req.session.address != "undefined" ) {
+		
+		var addresses = {}
+		addresses.rewardAddress = req.session.address
+		addresses.feeAddress = req.session.address
+		
+		httpRequest("POST", "/miner/block", function(response) {
+			
+			res.status(200).send(response);
+			
+		}, addresses);
 	
-	httpRequest("POST", "/miner/block", function(response) {
+	} else {
 		
-		res.status(200).send(response);
+		res.status(200).send("Not logged in.");
 		
-	}, addresses);
+	}
 	
 };
 

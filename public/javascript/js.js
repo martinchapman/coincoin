@@ -10,8 +10,6 @@ function refreshBalance() {
 	
 }
 
-
-
 $(function(){				
 	
 	
@@ -91,9 +89,9 @@ $(function(){
 			console.log("Not Supported.")
 			
 		}
+		
 		worker.postMessage("CoinCoin Miner | Start.");
 		
-	  	
     });
 	
 	$('#cancel').click(function(e){

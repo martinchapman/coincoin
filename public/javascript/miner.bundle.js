@@ -5583,10 +5583,28 @@ module.exports = Sha512;
 "use strict";
 
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var createHash = __webpack_require__(22);
 var config = __webpack_require__(45);
 
 module.exports = {
+
+	// https://stackoverflow.com/questions/3710204/how-to-check-if-a-string-is-a-valid-json-string-in-javascript-without-using-try
+	tryParseJSON: function tryParseJSON(jsonString) {
+
+		try {
+
+			var o = JSON.parse(jsonString);
+
+			if (o && (typeof o === 'undefined' ? 'undefined' : _typeof(o)) === "object") {
+
+				return o;
+			}
+		} catch (e) {}
+
+		return false;
+	},
 
 	httpRequestAsync: function httpRequestAsync(theUrl, callback, type) {
 		var data = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
@@ -5602,7 +5620,7 @@ module.exports = {
 				callback(xmlHttp.responseText);
 			} else if (xmlHttp.readyState == 4) {
 
-				console.log("Error (" + xmlHttp.readyState + "/" + xmlHttp.status + "): " + xmlHttp.responseText);
+				callback("Error (" + xmlHttp.readyState + "/" + xmlHttp.status + "): " + xmlHttp.responseText);
 			}
 		};
 
@@ -5634,23 +5652,29 @@ module.exports = {
 
 			module.exports.httpRequestAsync(config.NODE_PROXY + "/blockchain/difficulty", function (responseB) {
 
-				var block = JSON.parse(responseA).nextBlock;
+				if (module.exports.tryParseJSON(responseA)) {
 
-				do {
+					var block = JSON.parse(responseA).nextBlock;
 
-					block.timestamp = new Date().getTime() / 1000;
+					do {
 
-					block.nonce++;
+						block.timestamp = new Date().getTime() / 1000;
 
-					block.hash = createHash('sha256').update(block.index + block.previousHash + block.timestamp + JSON.stringify(block.transactions) + block.nonce).digest('hex');
+						block.nonce++;
 
-					var blockDifficulty = parseInt(block.hash.substring(0, 14), 16);
-				} while (blockDifficulty >= JSON.parse(responseB).difficulty);
+						block.hash = createHash('sha256').update(block.index + block.previousHash + block.timestamp + JSON.stringify(block.transactions) + block.nonce).digest('hex');
 
-				module.exports.httpRequestAsync(config.NODE_PROXY + "/blockchain/blocks/latest", function (responseC) {
+						var blockDifficulty = parseInt(block.hash.substring(0, 14), 16);
+					} while (blockDifficulty >= JSON.parse(responseB).difficulty);
 
-					callback();
-				}, "PUT", block);
+					module.exports.httpRequestAsync(config.NODE_PROXY + "/blockchain/blocks/latest", function (responseC) {
+
+						callback("Success.");
+					}, "PUT", block);
+				} else {
+
+					callback(responseA);
+				}
 			}, "GET");
 		}, "POST");
 	}
