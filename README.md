@@ -2,8 +2,6 @@
 
 # coincoin
 
-[https://martinchapman.co.uk/coincoin](https://martinchapman.co.uk/coincoin)
-
 Illustrative cryptocurrency client and middleware. 
 
 Interacts with a [(notso)naivecoin](https://github.com/martinchapman/notsonaivecoin) node.
