@@ -4,11 +4,11 @@
 
 [https://martinchapman.co.uk/coincoin](https://martinchapman.co.uk/coincoin)
 
-Illustrative cryptocurrency front end and middleware. 
+Illustrative cryptocurrency client and middleware. 
 
 Interacts with a [(notso)naivecoin](https://github.com/martinchapman/notsonaivecoin) node.
 
-Front end:
+Client:
 
 1. UI
 2. Browser miner.
